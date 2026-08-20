@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#39cac2" />
+  <title>Rabbit Ears 2.0 — Live Channel Wall</title>
+  <meta name="description" content="A stacked wall of live broadcast television feeds with a retro-future sports gallery." />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#wall" aria-label="Rabbit Ears 2.0 home">
+      <svg class="brand-mark" viewBox="0 0 80 80" aria-hidden="true"><path d="M13 12h54v43H13z" fill="none" stroke="currentColor" stroke-width="6"/><path d="m27 69 7-14h12l7 14M24 4l16 10L56 4" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round"/><path d="m28 29 9 7-9 7m15 0h10" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span><strong>Rabbit Ears <sup>2.0</sup></strong><small>the direct-feed channel wall</small></span>
+    </a>
+    <div class="top-actions"><span class="clock" id="clock">--:--</span><a class="pill ghost puffer-top" href="https://puffer.stanford.edu/" target="_blank" rel="noreferrer">Puffer ↗</a><button class="pill ghost" id="importBtn" type="button">Import M3U</button><button class="pill" id="customBtn" type="button">Add a feed</button></div>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="wallTitle">
+      <div class="hero-copy">
+        <p class="kicker"><span></span> Broadcasting live</p>
+        <h1 id="wallTitle">Rabbit Ears<br><em>2.0</em></h1>
+        <p>Seven live signals, one gloriously overbuilt stack. Click any television to blow it up full screen; tune the selected cabinet from the control room below.</p>
+        <div class="hero-actions"><button class="pill dark" id="soundBtn" type="button">Turn on selected audio</button><a class="text-link" href="#sports">Sports gallery ↓</a></div>
+      </div>
+      <aside class="now-card" aria-live="polite">
+        <span>YOU'RE TUNED TO</span><strong><b id="presetDisplay">01</b><span id="stationName">WHBQ-DT1</span></strong><p id="stationMeta">Memphis, TN · Local News</p><div class="signal"><i></i><span id="playerStatus">Connecting…</span></div>
+      </aside>
+      <div class="tv-wall" id="wall" aria-label="Live channel wall"></div>
+      <p class="wall-hint">Click a television for full screen <span>•</span> Feeds begin muted <span>•</span> Esc returns to the wall</p>
+    </section>
+
+    <section class="sports" id="sports" aria-labelledby="sportsTitle">
+      <div class="sports-head"><div><p class="kicker"><span></span> Sports gallery</p><h2 id="sportsTitle">The good seats<br><em>are at home.</em></h2></div><p>Local affiliates carry live sports when they are on the broadcast schedule. Pick a card to tune the active television and open it full screen.</p></div>
+      <div class="sports-grid" id="sportsGrid"></div>
+      <article class="puffer-card">
+        <div class="puffer-badge">STANFORD<br>RESEARCH</div><div><span>EXPERIMENTAL SIGNAL</span><h3>Puffer lives in its own lab.</h3><p>Puffer uses an authenticated WebSocket/MSE research player rather than a reusable HLS feed. Open the official player to participate in Stanford's free U.S.-only study.</p></div><a class="pill dark" href="https://puffer.stanford.edu/" target="_blank" rel="noreferrer">Open Puffer ↗</a>
+      </article>
+    </section>
+
+    <section class="control-deck" id="guide" aria-labelledby="guideTitle">
+      <div class="deck-intro">
+        <p class="kicker coral"><span></span> Control room</p><h2 id="guideTitle">Pick a station.<br>Take the dial.</h2><p>The guide tunes whichever television is selected above. Use the buttons, keyboard arrows, or enter a preset.</p>
+        <div class="dial-row"><button class="dial-button" id="channelDown" type="button" aria-label="Previous channel">−<small>CHANNEL</small></button><form class="tune-form" id="tuneForm"><label for="tuneInput">PRESET</label><input id="tuneInput" inputmode="numeric" pattern="[0-9]*" maxlength="3" placeholder="01" /><button type="submit">GO</button></form><button class="dial-button" id="channelUp" type="button" aria-label="Next channel">+<small>CHANNEL</small></button></div>
+        <div class="metrics" aria-label="Selected stream metrics"><div><span>QUALITY</span><strong id="qualityMetric">—</strong></div><div><span>RATE</span><strong id="rateMetric">—</strong></div><div><span>BUFFER</span><strong id="bufferMetric">—</strong></div></div>
+      </div>
+      <div class="guide-panel">
+        <div class="guide-head"><div><span>THE LINEUP</span><strong id="guideCount">0 feeds</strong></div><label class="search"><span aria-hidden="true">⌕</span><input id="searchInput" type="search" placeholder="Search station or city" /></label></div>
+        <div class="filters" id="filters" aria-label="Filter channels"></div><div class="channel-grid" id="channelGrid"></div>
+      </div>
+    </section>
+
+    <section class="notice" aria-label="Playback information"><div class="notice-mark">RE</div><p><strong>Direct playback, always.</strong> Rabbit Ears 2.0 does not proxy or rebroadcast video. Availability, content and location restrictions are controlled by each source.</p><a id="rawLink" href="#" target="_blank" rel="noreferrer">Open selected feed ↗</a></section>
+  </main>
+  <footer><span>RABBIT EARS 2.0 © 2026</span><span>PUBLIC + STATION-PROVIDED HLS</span><a href="#wall">BACK TO THE STACK ↑</a></footer>
+
+  <input id="m3uFile" type="file" accept=".m3u,.m3u8,audio/x-mpegurl,application/vnd.apple.mpegurl" hidden />
+  <dialog id="customDialog"><form method="dialog" class="dialog-card" id="customForm"><div class="dialog-head"><div><span>NEW SIGNAL</span><strong>Add a custom feed</strong></div><button value="cancel" aria-label="Close">×</button></div><label>CHANNEL NAME<input id="customName" value="Custom channel" /></label><label>HLS / M3U8 URL<input id="customUrl" type="url" required placeholder="https://…/master.m3u8" /></label><p>The URL plays directly in your browser and is never sent through this app.</p><div class="dialog-actions"><button value="cancel" class="pill ghost">Cancel</button><button id="customTune" value="default" class="pill">Add & tune</button></div></form></dialog>
+  <script src="channels.js"></script><script src="https://cdn.jsdelivr.net/npm/hls.js@1.6.15/dist/hls.min.js"></script><script src="app.js"></script>
+</body>
+</html>
